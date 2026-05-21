@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaTech Pro | Mecanitzat Industrial Professional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-primary: #0EA5E9;
+            --blue-light: #38BDF8;
+            --blue-dark: #0284C7;
+            --blue-bg: #F0F9FF;
+            --light: #FFFFFF;
+            --dark: #1E293B;
+            --gray: #64748B;
+            --accent: #F97316;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--blue-bg);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--blue-primary);
+            transition: all 0.3s;
+        }
+        nav.scrolled {
+            padding: 0.8rem 5%;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.1);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--blue-primary);
+            letter-spacing: -1px;
+            transition: transform 0.3s;
+        }
+        .logo:hover { transform: scale(1.05); }
+
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+
+        .lang-selector {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--blue-primary);
+            border-radius: 20px;
+            background: var(--light);
+            transition: all 0.3s;
+        }
+        .lang-selector:hover {
+            background: var(--blue-primary);
+            color: var(--light);
+            transform: translateY(-2px);
+        }
+        .lang-selector i { font-size: 1rem; }
+
+        .lang-options {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: var(--light);
+            border: 1px solid var(--blue-primary);
+            border-radius: 8px;
+            padding: 0.5rem;
+            display: none;
+            min-width: 120px;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+            animation: fadeIn 0.3s ease;
+        }
+        .lang-selector:hover .lang-options { display: block; }
+        .lang-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .lang-option:hover { background: var(--blue-primary); color: var(--light); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .cta-btn {
+            padding: 0.7rem 1.8rem;
+            border: 2px solid var(--blue-primary);
+            background: var(--blue-primary);
+            color: var(--light);
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .cta-btn:hover {
+            background: var(--blue-dark);
+            border-color: var(--blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+        }
+        .cta-btn:hover::before { left: 100%; }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 40%);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(14, 165, 233, 0.03), transparent);
+            animation: rotate 30s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--blue-primary);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            color: var(--blue-primary);
+            position: relative;
+            animation: slideUp 0.8s ease;
+            animation-fill-mode: both;
+        }
+        .hero-badge .tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .hero-badge:hover .tooltip { opacity: 1; }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dark);
+            animation: slideUp 0.8s ease 0.2s both;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(90deg, var(--blue-primary), var(--blue-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            animation: slideUp 0.8s ease 0.4s both;
+        }
+
+        .stats-hero {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            animation: slideUp 0.8s ease 0.6s both;
+        }
+        .stat {
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .stat .tooltip {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--blue-primary);
+            color: var(--light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        .stat:hover .tooltip { opacity: 1; }
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--blue-primary);
+            animation: pulse 2s infinite;
+        }
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        section { padding: 6rem 5%; opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dark);
+            position: relative;
+        }
+        .section-title .tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--blue-primary);
+            color: var(--light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        .section-title:hover .tooltip { opacity: 1; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--light);
+            border: 2px solid var(--blue-primary);
+            border-radius: 15px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .service-card.visible { opacity: 1; transform: translateY(0); }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        .service-card:hover::before { left: 100%; }
+        .service-card:hover {
+            border-color: var(--blue-dark);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--blue-primary);
+            margin-bottom: 1.5rem;
+            transition: transform 0.4s;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.2) rotate(5deg);
+            animation: float 3s ease-in-out infinite;
+        }
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .service-card p { color: var(--gray); }
+
+        .pricing-table {
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .pricing-table.visible { opacity: 1; transform: translateY(0); }
+
+        .price-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            padding: 1.2rem 2rem;
+            border-bottom: 1px solid var(--blue-primary);
+            align-items: center;
+            background: var(--light);
+            transition: all 0.3s;
+        }
+        .price-row:hover { background: rgba(14, 165, 233, 0.05); }
+        .price-row.header {
+            background: var(--blue-primary);
+            color: var(--light);
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
+        }
+        .price-row:last-child { border-radius: 0 0 10px 10px; }
+        .price-value {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--blue-primary);
+            font-weight: 600;
+        }
+
+        .features-box {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 12px;
+            border: 2px solid var(--blue-primary);
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .feature-item.visible { opacity: 1; transform: translateY(0); }
+        .feature-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.2);
+            border-color: var(--blue-dark);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--blue-primary);
+            margin-bottom: 1rem;
+            transition: all 0.4s;
+        }
+        .feature-item:hover .feature-icon {
+            transform: scale(1.2);
+            animation: float 3s ease-in-out infinite;
+        }
+        .feature-item h4 { color: var(--dark); margin-bottom: 0.5rem; }
+        .feature-item p { color: var(--gray); font-size: 0.9rem; }
+
+        footer {
+            background: var(--blue-primary);
+            padding: 3rem 5% 2rem;
+            text-align: center;
+            color: var(--light);
+        }
+
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 3rem; }
+            .services-grid { grid-template-columns: 1fr 1fr; }
+            .features-box { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .features-box { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="logo">MetaTech Pro</div>
+        <div class="nav-right">
+            <div class="lang-selector">
+                <i class="fas fa-globe"></i>
+                <span id="current-lang">CA</span>
+                <div class="lang-options">
+                    <div class="lang-option" data-lang="ca" data-i18n="lang.ca">Català</div>
+                    <div class="lang-option" data-lang="es" data-i18n="lang.es">Español</div>
+                    <div class="lang-option" data-lang="en" data-i18n="lang.en">English</div>
+                    <div class="lang-option" data-lang="fr" data-i18n="lang.fr">Français</div>
+                </div>
+            </div>
+            <button class="cta-btn" data-i18n="cta.quote">Pressupost urgent</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-bolt"></i>
+                <span data-i18n="hero.badge">24h DISPONIBLE · 7 DIES/SETMANA</span>
+            </div>
+            <h1 data-i18n="hero.title"><span class="gradient-text" data-i18n="hero.title-pro">PROFESSIONAL</span></h1>
+            <p data-i18n="hero.subtitle">Fabricació de peces metàl·liques amb precisió CNC i lliurament en 24h per a urgències industrials.</p>
+            <button class="cta-btn" style="padding: 1rem 3rem; font-size: 1.1rem;" data-i18n="cta.quoteBtn">Sol·licitar Pressupost</button>
+
+            <div class="stats-hero">
+                <div class="stat" data-i18n="stats.delivery">
+                    <div class="stat-value">24h</div>
+                    <div class="stat-label">Lliurament màxim</div>
+                </div>
+                <div class="stat" data-i18n="stats.precision">
+                    <div class="stat-value">±0.01mm</div>
+                    <div class="stat-label">Precisió CNC</div>
+                </div>
+                <div class="stat" data-i18n="stats.availability">
+                    <div class="stat-value">7/7</div>
+                    <div class="stat-label">Total disponibilitat</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="serveis">
+        <h2 class="section-title" data-i18n="services.title">Serveis Industrials</h2>
+        <div class="services-grid">
+            <div class="service-card" data-i18n="service.cnc">
+                <div class="service-icon"><i class="fas fa-cogs"></i></div>
+                <h3>Mecanitzat CNC</h3>
+                <p>Toleràncies de ±0,01mm amb maquinària multieix per a parts complexes.</p>
+            </div>
+
+            <div class="service-card" data-i18n="service.forgings">
+                <div class="service-icon"><i class="fas fa-wrench"></i></div>
+                <h3>Racors i canonades</h3>
+                <p>Fabricació a mida en acer, inox i alumini amb estàndards BSP, NPT.</p>
+            </div>
+
+            <div class="service-card" data-i18n="service.welding">
+                <div class="service-icon"><i class="fas fa-fire"></i></div>
+                <h3>Soldadura</h3>
+                <p>Reparació de canonades i recer d'extrems amb qualitat certificada.</p>
+            </div>
+
+            <div class="service-card" data-i18n="service.urgent">
+                <div class="service-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Urgència 24h</h3>
+                <p>Atenció immediata per a parades de producció. Diagnòstic gratuït.</p>
+            </div>
+
+            <div class="service-card" data-i18n="service.diagnostic">
+                <div class="service-icon"><i class="fas fa-search"></i></div>
+                <h3>Diagnòstic gratuït</h3>
+                <p>Avaluació professional en 2 hores. Sense compromís.</p>
+            </div>
+
+            <div class="service-card" data-i18n="service.circular">
+                <div class="service-icon"><i class="fas fa-recycle"></i></div>
+                <h3>Economia circular</h3>
+                <p>Reciclatge de materials per a reduir costos i impacte.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="preus">
+        <h2 class="section-title" data-i18n="pricing.title">Preus Industrials</h2>
+        <div class="pricing-table">
+            <div class="price-row header">
+                <div data-i18n="pricing.service">Servei</div>
+                <div data-i18n="pricing.price">Preu</div>
+                <div data-i18n="pricing.delivery">Termini</div>
+            </div>
+            <div class="price-row">
+                <div data-i18n="pricing.standard">Mecanitzat estàndard</div>
+                <div class="price-value">45-80€</div>
+                <div>24-72h</div>
+            </div>
+            <div class="price-row">
+                <div data-i18n="pricing.custom">Fabricació a mida</div>
+                <div class="price-value">80-120€</div>
+                <div>48-96h</div>
+            </div>
+            <div class="price-row">
+                <div data-i18n="pricing.express">Urgència 24h</div>
+                <div class="price-value">+30-50%</div>
+                <div>24h</div>
+            </div>
+            <div class="price-row">
+                <div data-i18n="pricing.diagnostic">Diagnòstic</div>
+                <div class="price-value">GRATUÏT</div>
+                <div>2h</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title" data-i18n="why.title">Per què MetaTech Pro</h2>
+        <div class="features-box">
+            <div class="feature-item" data-i18n="why.fast">
+                <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
+                <h4>24 hores</h4>
+                <p>Lliurament urgent garantit</p>
+            </div>
+
+            <div class="feature-item" data-i18n="why.precision">
+                <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+                <h4>±0,01mm</h4>
+                <p>Precisió CNC extrema</p>
+            </div>
+
+            <div class="feature-item" data-i18n="why.week">
+                <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                <h4>7/7</h4>
+                <p>Disponibilitat completa</p>
+            </div>
+
+            <div class="feature-item" data-i18n="why.free">
+                <div class="feature-icon"><i class="fas fa-euro-sign"></i></div>
+                <h4>0€</h4>
+                <p>Diagnòstic sense cost</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 MetaTech Pro. Mecanitzat industrial professional.</p>
+    </footer>
+
+    <script>
+        const translations = {
+            ca: {
+                'lang.ca': 'Català', 'lang.es': 'Español', 'lang.en': 'English', 'lang.fr': 'Français',
+                'cta.quote': 'Pressupost urgent', 'cta.quoteBtn': 'Sol·licitar Pressupost',
+                'hero.badge': '24h DISPONIBLE · 7 DIES/SETMANA', 'hero.title': 'MECANITZAT INDUSTRIAL',
+                'hero.title-pro': 'PROFESSIONAL', 'hero.subtitle': 'Fabricació de peces metàl·liques amb precisió CNC i lliurament en 24h per a urgències industrials.',
+                'services.title': 'Serveis Industrials', 'pricing.title': 'Preus Industrials',
+                'why.title': 'Per què MetaTech Pro',
+                'pricing.service': 'Servei', 'pricing.price': 'Preu', 'pricing.delivery': 'Termini',
+                'pricing.standard': 'Mecanitzat estàndard', 'pricing.custom': 'Fabricació a mida',
+                'pricing.express': 'Urgència 24h', 'pricing.diagnostic': 'Diagnòstic'
+            },
+            es: {
+                'lang.ca': 'Catalán', 'lang.es': 'Español', 'lang.en': 'English', 'lang.fr': 'Français',
+                'cta.quote': 'Presupuesto urgente', 'cta.quoteBtn': 'Solicitar Presupuesto',
+                'hero.badge': '24h DISPONIBLE · 7 DÍAS/SEMANA', 'hero.title': 'MECANIZADO INDUSTRIAL',
+                'hero.title-pro': 'PROFESIONAL', 'hero.subtitle': 'Fabricación de piezas metálicas con precisión CNC y entrega en 24h para urgencias industriales.',
+                'services.title': 'Servicios Industriales', 'pricing.title': 'Precios Industriales',
+                'why.title': 'Por qué MetaTech Pro',
+                'pricing.service': 'Servicio', 'pricing.price': 'Precio', 'pricing.delivery': 'Plazo',
+                'pricing.standard': 'Mecanizado estándar', 'pricing.custom': 'Fabricación a medida',
+                'pricing.express': 'Urgencia 24h', 'pricing.diagnostic': 'Diagnóstico'
+            },
+            en: {
+                'lang.ca': 'Catalan', 'lang.es': 'Spanish', 'lang.en': 'English', 'lang.fr': 'French',
+                'cta.quote': 'Urgent Quote', 'cta.quoteBtn': 'Request Quote',
+                'hero.badge': '24h AVAILABLE · 7 DAYS/WEEK', 'hero.title': 'INDUSTRIAL MACHINING',
+                'hero.title-pro': 'PROFESSIONAL', 'hero.subtitle': 'Metal parts manufacturing with CNC precision and 24h delivery for industrial emergencies.',
+                'services.title': 'Industrial Services', 'pricing.title': 'Industrial Prices',
+                'why.title': 'Why MetaTech Pro',
+                'pricing.service': 'Service', 'pricing.price': 'Price', 'pricing.delivery': 'Delivery',
+                'pricing.standard': 'Standard Machining', 'pricing.custom': 'Custom Fabrication',
+                'pricing.express': '24h Urgency', 'pricing.diagnostic': 'Diagnosis'
+            },
+            fr: {
+                'lang.ca': 'Catalan', 'lang.es': 'Espagnol', 'lang.en': 'Anglais', 'lang.fr': 'Français',
+                'cta.quote': 'Devis urgent', 'cta.quoteBtn': 'Demander un devis',
+                'hero.badge': '24h DISPONIBLE · 7 JOURS/SEMAINE', 'hero.title': 'USINAGE INDUSTRIEL',
+                'hero.title-pro': 'PROFESSIONNEL', 'hero.subtitle': 'Fabrication de pièces métalliques avec précision CNC et livraison en 24h pour urgences industrielles.',
+                'services.title': 'Services Industriels', 'pricing.title': 'Prix Industriels',
+                'why.title': 'Pourquoi MetaTech Pro',
+                'pricing.service': 'Service', 'pricing.price': 'Prix', 'pricing.delivery': 'Délai',
+                'pricing.standard': 'Usinage standard', 'pricing.custom': 'Fabrication sur mesure',
+                'pricing.express': 'Urgence 24h', 'pricing.diagnostic': 'Diagnostic'
+            }
+        };
+
+        let currentLang = 'ca';
+
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.textContent = translations[currentLang][key];
+                }
+            });
+            document.getElementById('current-lang').textContent = currentLang.toUpperCase();
+        }
+
+        document.querySelectorAll('.lang-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                currentLang = e.target.dataset.lang;
+                updateTranslations();
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section, .service-card, .pricing-table, .feature-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
